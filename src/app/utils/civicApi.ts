@@ -13,14 +13,13 @@ export async function lookupLawmakers(form: AddressFormValues): Promise<LookupRe
   }
 
   const addressString = `${form.street}, ${form.city}, ${form.state} ${form.zip}`;
+  // Fetch all representatives without server-side role filtering.
+  // The API returns 404 when level/role filters find no match for an address,
+  // even for valid addresses. We filter to federal officials client-side instead.
   const params = new URLSearchParams({
     address: addressString,
     key: API_KEY,
-    levels: "country",
   });
-  // roles must be repeated params — URLSearchParams.append handles this
-  params.append("roles", "legislatorUpperBody");
-  params.append("roles", "legislatorLowerBody");
 
   const response = await fetch(`${BASE_URL}?${params.toString()}`);
 
