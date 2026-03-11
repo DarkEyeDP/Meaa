@@ -1,52 +1,109 @@
-import { normalizeOfficials } from "./normalizeOfficials";
-import type { AddressFormValues, LookupResult } from "../types/lawmakers";
-import type { GoogleCivicResponse } from "./normalizeOfficials";
+import type { AddressFormValues, LookupResult, Official } from "../types/lawmakers";
 
-const API_KEY = import.meta.env.VITE_GOOGLE_CIVIC_API_KEY as string | undefined;
-const BASE_URL = "https://www.googleapis.com/civicinfo/v2/representatives";
+// Served from the same origin — no CORS issues, no external dependency
+const LEGISLATORS_URL = `${import.meta.env.BASE_URL}legislators-current.json`;
 
-export async function lookupLawmakers(form: AddressFormValues): Promise<LookupResult> {
-  if (!API_KEY) {
-    throw new Error(
-      "Google Civic API key is not configured. Add VITE_GOOGLE_CIVIC_API_KEY to your .env file."
-    );
-  }
+// ─── Legislator data types ────────────────────────────────────────────────────
 
-  const addressString = `${form.street}, ${form.city}, ${form.state} ${form.zip}`;
-  // Fetch all representatives without server-side role filtering.
-  // The API returns 404 when level/role filters find no match for an address,
-  // even for valid addresses. We filter to federal officials client-side instead.
-  const params = new URLSearchParams({
-    address: addressString,
-    key: API_KEY,
-  });
+interface LegislatorTerm {
+  type: "sen" | "rep";
+  start: string;
+  end?: string;
+  state: string;
+  party?: string;
+  district?: number; // House only; 0 = at-large
+  url?: string;
+  contact_form?: string;
+  phone?: string;
+}
 
-  const response = await fetch(`${BASE_URL}?${params.toString()}`);
+interface Legislator {
+  id: { bioguide: string };
+  name: {
+    first: string;
+    last: string;
+    official_full?: string;
+  };
+  terms: LegislatorTerm[];
+}
 
-  if (response.status === 404) {
-    // Address not found or no representatives returned
-    return {
-      success: false,
-      inputAddress: addressString,
-      officials: { senators: [], representative: null },
-    };
-  }
+// ─── Legislator dataset ───────────────────────────────────────────────────────
 
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({})) as { error?: { message?: string } };
-    throw new Error(
-      body?.error?.message ?? `Request failed (${response.status}). Please try again.`
-    );
-  }
+let cachedLegislators: Legislator[] | null = null;
 
-  const data = (await response.json()) as GoogleCivicResponse;
-  const officials = normalizeOfficials(data);
+async function fetchLegislators(): Promise<Legislator[]> {
+  if (cachedLegislators) return cachedLegislators;
+  const res = await fetch(LEGISLATORS_URL);
+  if (!res.ok) throw new Error("Failed to load congressional directory. Please try again.");
+  cachedLegislators = (await res.json()) as Legislator[];
+  return cachedLegislators;
+}
 
-  const hasResults = officials.senators.length > 0 || officials.representative !== null;
+function getCurrentTerm(l: Legislator): LegislatorTerm {
+  return l.terms[l.terms.length - 1];
+}
+
+function normalizeToOfficial(l: Legislator, chamber: "Senate" | "House"): Official {
+  const term = getCurrentTerm(l);
+  const name = l.name.official_full ?? `${l.name.first} ${l.name.last}`;
+  const urls: string[] = term.url ? [term.url] : [];
 
   return {
-    success: hasResults,
+    name,
+    office:
+      chamber === "Senate"
+        ? "United States Senate"
+        : "United States House of Representatives",
+    party: term.party ?? null,
+    state: term.state,
+    district: term.district != null ? String(term.district) : null,
+    phones: term.phone ? [term.phone] : [],
+    urls,
+    emails: [],
+    photoUrl: null,
+    contactUrl: term.contact_form ?? urls[0] ?? null,
+    address: null,
+  };
+}
+
+// ─── Main export ──────────────────────────────────────────────────────────────
+
+export async function lookupLawmakers(form: AddressFormValues): Promise<LookupResult> {
+  const addressString = `${form.street}, ${form.city}, ${form.state} ${form.zip}`;
+  const state = form.state.toUpperCase();
+  const district = form.district.trim();
+
+  const legislators = await fetchLegislators();
+
+  // Always find both senators for the state
+  const senators = legislators
+    .filter((l) => {
+      const t = getCurrentTerm(l);
+      return t.type === "sen" && t.state === state;
+    })
+    .map((l) => normalizeToOfficial(l, "Senate"));
+
+  // Parse comma-separated district numbers (e.g. "31" or "31, 10")
+  const districts = district
+    ? district.split(",").map((d) => d.trim()).filter(Boolean)
+    : [];
+
+  const representatives: Official[] = [];
+  for (const d of districts) {
+    const repRaw = legislators.find((l) => {
+      const t = getCurrentTerm(l);
+      return (
+        t.type === "rep" &&
+        t.state === state &&
+        String(t.district ?? "0") === d
+      );
+    });
+    if (repRaw) representatives.push(normalizeToOfficial(repRaw, "House"));
+  }
+
+  return {
+    success: senators.length > 0 || representatives.length > 0,
     inputAddress: addressString,
-    officials,
+    officials: { senators, representatives },
   };
 }

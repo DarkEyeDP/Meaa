@@ -60,7 +60,7 @@ export function FindYourLawmakers() {
   };
 
   const allOfficials: Official[] = result
-    ? [...result.officials.senators, ...(result.officials.representative ? [result.officials.representative] : [])]
+    ? [...result.officials.senators, ...result.officials.representatives]
     : [];
 
   return (
@@ -140,24 +140,18 @@ export function FindYourLawmakers() {
               <AlertCircle className="text-red-500 flex-shrink-0 mt-0.5" size={22} />
               <div>
                 <h3 className="font-semibold text-red-800 mb-1">
-                  Lookup Failed
+                  {errorMessage === "ADDRESS_NOT_FOUND"
+                    ? "Address Not Recognized"
+                    : "Lookup Failed"}
                 </h3>
-                <p className="text-sm text-red-700">{errorMessage}</p>
-                {errorMessage.includes("API key") && (
-                  <p className="text-sm text-red-600 mt-2">
-                    To enable this feature, add{" "}
-                    <code className="bg-red-100 px-1 rounded">VITE_GOOGLE_CIVIC_API_KEY</code>{" "}
-                    to your <code className="bg-red-100 px-1 rounded">.env</code> file with a valid{" "}
-                    <a
-                      href="https://console.cloud.google.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline"
-                    >
-                      Google Civic Information API
-                    </a>{" "}
-                    key.
-                  </p>
+                {errorMessage === "ADDRESS_NOT_FOUND" ? (
+                  <ul className="text-sm text-red-600 mt-1 space-y-1 list-disc list-inside">
+                    <li>Make sure the street number and name are spelled correctly</li>
+                    <li>Try abbreviating the street type (St, Ave, Blvd, Dr, Ln)</li>
+                    <li>Double-check the ZIP code matches the city and state</li>
+                  </ul>
+                ) : (
+                  <p className="text-sm text-red-700">{errorMessage}</p>
                 )}
               </div>
             </div>
@@ -201,13 +195,28 @@ export function FindYourLawmakers() {
                 </p>
               </div>
 
+              {result.officials.representatives.length === 0 && (
+                <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                  Showing your two U.S. Senators.{" "}
+                  <a
+                    href="https://www.house.gov/representatives/find-your-representative"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold underline"
+                  >
+                    Find your congressional district
+                  </a>{" "}
+                  and enter it in the form above to also see your House Representative.
+                </div>
+              )}
+
               <div className="grid md:grid-cols-3 gap-6">
                 {result.officials.senators.map((senator) => (
                   <OfficialCard key={senator.name} official={senator} />
                 ))}
-                {result.officials.representative && (
-                  <OfficialCard official={result.officials.representative} />
-                )}
+                {result.officials.representatives.map((rep) => (
+                  <OfficialCard key={rep.name} official={rep} />
+                ))}
               </div>
             </div>
           </section>

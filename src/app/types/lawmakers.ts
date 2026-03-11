@@ -3,6 +3,7 @@ export interface AddressFormValues {
   city: string;
   state: string;
   zip: string;
+  district: string; // congressional district number; empty string = senators only
 }
 
 export interface OfficialAddress {
@@ -28,7 +29,7 @@ export interface Official {
 
 export interface OfficialsResult {
   senators: Official[];
-  representative: Official | null;
+  representatives: Official[];
 }
 
 export interface LookupResult {

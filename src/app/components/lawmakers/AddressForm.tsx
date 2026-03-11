@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, ExternalLink } from "lucide-react";
 import type { AddressFormValues } from "../../types/lawmakers";
 
 const US_STATES: [string, string][] = [
@@ -31,6 +31,7 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
     city: "",
     state: "",
     zip: "",
+    district: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -42,6 +43,8 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
     if (!values.zip.trim()) next.zip = "ZIP code is required";
     else if (!/^\d{5}(-\d{4})?$/.test(values.zip.trim()))
       next.zip = "Enter a valid 5-digit ZIP code";
+    if (values.district && !/^[\d\s,]+$/.test(values.district.trim()))
+      next.district = "Enter district numbers separated by commas (e.g. 31 or 31, 10)";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -80,9 +83,7 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
             onChange={set("street")}
             disabled={isLoading}
           />
-          {errors.street && (
-            <p className="text-red-500 text-xs mt-1">{errors.street}</p>
-          )}
+          {errors.street && <p className="text-red-500 text-xs mt-1">{errors.street}</p>}
         </div>
 
         {/* City */}
@@ -97,9 +98,7 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
             onChange={set("city")}
             disabled={isLoading}
           />
-          {errors.city && (
-            <p className="text-red-500 text-xs mt-1">{errors.city}</p>
-          )}
+          {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
         </div>
 
         {/* State */}
@@ -113,21 +112,15 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
           >
             <option value="">Select a state</option>
             {US_STATES.map(([abbr, name]) => (
-              <option key={abbr} value={abbr}>
-                {name}
-              </option>
+              <option key={abbr} value={abbr}>{name}</option>
             ))}
           </select>
-          {errors.state && (
-            <p className="text-red-500 text-xs mt-1">{errors.state}</p>
-          )}
+          {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
         </div>
 
         {/* ZIP */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            ZIP Code
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
           <input
             type="text"
             placeholder="78701"
@@ -138,8 +131,40 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
             onChange={set("zip")}
             disabled={isLoading}
           />
-          {errors.zip && (
-            <p className="text-red-500 text-xs mt-1">{errors.zip}</p>
+          {errors.zip && <p className="text-red-500 text-xs mt-1">{errors.zip}</p>}
+        </div>
+
+        {/* Congressional District */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Congressional District{" "}
+            <span className="text-gray-400 font-normal">(optional)</span>
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. 31 or 31, 10"
+            maxLength={20}
+            className={inputCls("district")}
+            value={values.district}
+            onChange={set("district")}
+            disabled={isLoading}
+          />
+          {errors.district ? (
+            <p className="text-red-500 text-xs mt-1">{errors.district}</p>
+          ) : (
+            <p className="text-xs text-gray-500 mt-1">
+              Not sure?{" "}
+              <a
+                href="https://www.house.gov/representatives/find-your-representative"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#C9A227] hover:underline inline-flex items-center gap-0.5"
+              >
+                Find your district
+                <ExternalLink size={11} />
+              </a>
+              {" "}· Multiple districts: <span className="font-mono">31, 10</span> · Leave blank for senators only.
+            </p>
           )}
         </div>
       </div>
