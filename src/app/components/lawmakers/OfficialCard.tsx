@@ -11,6 +11,23 @@ const PARTY_STYLES: Record<string, string> = {
   Independent: "bg-gray-100 text-gray-700",
 };
 
+const MILITARY_COMMITTEES = new Set([
+  "Armed Services",
+  "Veterans' Affairs",
+  "Appropriations",
+  "Intelligence",
+  "Homeland Security",
+  "Foreign Relations",
+  "Foreign Affairs",
+  "Homeland Security and Governmental Affairs",
+]);
+
+function isMilitaryRelevant(committee: string): boolean {
+  return [...MILITARY_COMMITTEES].some((k) =>
+    committee.toLowerCase().includes(k.toLowerCase())
+  );
+}
+
 function partyStyle(party: string | null): string {
   if (!party) return "bg-gray-100 text-gray-700";
   for (const [key, cls] of Object.entries(PARTY_STYLES)) {
@@ -76,6 +93,27 @@ export function OfficialCard({ official }: Props) {
           >
             {official.party}
           </span>
+        )}
+
+        {/* Committees */}
+        {official.committees.length > 0 && (
+          <div>
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+              Committees
+            </p>
+            <ul className="space-y-1">
+              {official.committees.map((c) => {
+                const highlight = isMilitaryRelevant(c);
+                return (
+                  <li key={c} className={`text-xs flex items-start gap-1.5 ${highlight ? "text-[#0B1F3A] font-semibold" : "text-gray-500"}`}>
+                    <span className={`mt-1 w-1 h-1 rounded-full flex-shrink-0 ${highlight ? "bg-[#C9A227]" : "bg-gray-300"}`} />
+                    {c}
+                    {highlight && <span className="ml-1 text-[#C9A227]">★</span>}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         )}
 
         {/* Action buttons */}

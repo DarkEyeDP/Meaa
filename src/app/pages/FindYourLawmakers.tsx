@@ -212,13 +212,19 @@ export function FindYourLawmakers() {
           <section className="py-12 bg-gray-50 border-t border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-[#0B1F3A] mb-1">
-                  Take Action on an Issue
-                </h2>
-                <p className="text-gray-600 text-sm">
-                  Select an issue to generate a personalized advocacy message you can
-                  copy and paste into your lawmaker's contact form.
-                </p>
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-[#0B1F3A] mb-1">
+                    Take Action on an Issue
+                  </h2>
+                  <p className="text-gray-600 text-sm">
+                    Select an issue to generate a personalized advocacy message you can
+                    copy and paste into your lawmaker's contact form.
+                  </p>
+                  <p className="text-xs text-gray-400 mt-2">
+                    <span className="font-semibold text-gray-500">How it works:</span>{" "}
+                    Copy your message, open your lawmaker's contact page, and paste it into their webform. Personalize it with your own story. Phone calls are also highly effective.
+                  </p>
+                </div>
               </div>
 
               <div className="mb-6 p-5 bg-white rounded-xl border border-gray-200 shadow-sm">
@@ -226,7 +232,7 @@ export function FindYourLawmakers() {
                   Your Contact Info{" "}
                   <span className="text-gray-400 font-normal">(optional — included in your message signature)</span>
                 </p>
-                <div className="grid sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">Name</label>
                     <input
@@ -292,18 +298,6 @@ export function FindYourLawmakers() {
             </div>
           </section>
 
-          {/* Reminder */}
-          <section className="py-8 bg-[#0B1F3A]">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-              <p className="text-gray-300 text-sm">
-                <strong className="text-[#C9A227]">How it works:</strong> Copy
-                your message, open your lawmaker's contact page, and paste it
-                into their webform. Personalize it with your own story for
-                greater impact. Phone calls are also highly effective — even a
-                brief call counts.
-              </p>
-            </div>
-          </section>
         </>
       )}
     </div>

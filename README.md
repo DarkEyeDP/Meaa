@@ -91,8 +91,9 @@ src/
       theme.css             # Custom design tokens and theme variables
       fonts.css
 public/
-  legislators-current.json  # Bundled congressional roster (update periodically)
-  404.html                  # GitHub Pages SPA redirect shim
+  legislators-current.json      # Bundled congressional roster (update periodically)
+  legislator-committees.json    # Bioguide ID → committee name list (update with roster)
+  404.html                      # GitHub Pages SPA redirect shim
 .github/
   workflows/
     deploy.yml              # CI/CD: build + deploy to GitHub Pages on push to main
@@ -104,7 +105,14 @@ public/
 
 Located at `/find-your-lawmakers`. Visitors enter their home address and optional congressional district number(s) to look up their two U.S. Senators and House Representative(s). They can then select one of five MEAA advocacy issues to generate a personalized message to copy into their lawmaker's contact form.
 
-**No API keys required.** Congressional data is bundled as a static JSON file (`public/legislators-current.json`) derived from the open-source [unitedstates/congress-legislators](https://github.com/unitedstates/congress-legislators) dataset. It is served from the same origin — no CORS issues, no external runtime dependencies.
+**No API keys required.** Congressional data is bundled as two static JSON files served from the same origin — no CORS issues, no external runtime dependencies:
+
+| File | Source | Purpose |
+|---|---|---|
+| `public/legislators-current.json` | [unitedstates/congress-legislators](https://github.com/unitedstates/congress-legislators) | Names, state, district, phone, contact URL, party |
+| `public/legislator-committees.json` | unitedstates/congress-legislators committee YAML | Maps bioguide ID → committee name list |
+
+Lawmaker photos are loaded from the Library of Congress bioguide photo service (`https://bioguide.congress.gov/bioguide/photo/{letter}/{id}.jpg`) — no API key required.
 
 **Advocacy issue templates** (in `src/app/data/messageTemplates.ts`):
 - Military Pay & Compensation
@@ -113,11 +121,22 @@ Located at `/find-your-lawmakers`. Visitors enter their home address and optiona
 - Family Support (childcare, spouse employment)
 - Transition & Veteran Success
 
-Each template includes an email body, subject line, and phone script. Templates support `{{recipientName}}`, `{{userName}}`, and `{{userState}}` placeholders.
+Each template includes an email body, subject line, and phone script. Templates support `{{recipientName}}`, `{{userName}}`, `{{userState}}`, and `{{userContactInfo}}` placeholders. Senders can optionally enter their name, phone, and email — these are appended to the message signature.
+
+**Military-relevant committee highlighting:** Committees on each official's card are automatically bolded and starred (★) if they fall into one of these categories:
+
+- Armed Services
+- Veterans' Affairs
+- Appropriations
+- Intelligence
+- Homeland Security
+- Foreign Relations
+- Foreign Affairs
+- Homeland Security and Governmental Affairs
 
 ### Keeping congressional data current
 
-The file `public/legislators-current.json` is a point-in-time snapshot and must be refreshed manually when the congressional roster changes.
+Both `public/legislators-current.json` and `public/legislator-committees.json` are point-in-time snapshots and must be refreshed manually when the congressional roster changes.
 
 #### When to update
 
@@ -132,16 +151,21 @@ The file `public/legislators-current.json` is a point-in-time snapshot and must 
 
 #### How to update
 
-1. **Download the latest YAML source:**
+1. **Download the latest YAML sources:**
 
    ```bash
    curl -fsSL https://raw.githubusercontent.com/unitedstates/congress-legislators/main/legislators-current.yaml \
      -o legislators-current.yaml
+   curl -fsSL https://raw.githubusercontent.com/unitedstates/congress-legislators/main/committees-current.yaml \
+     -o committees-current.yaml
+   curl -fsSL https://raw.githubusercontent.com/unitedstates/congress-legislators/main/committee-membership-current.yaml \
+     -o committee-membership-current.yaml
    ```
 
-2. **Convert to JSON and overwrite the bundled file** (`js-yaml` is already a dev dependency):
+2. **Convert to JSON and overwrite the bundled files** (`js-yaml` is already a dev dependency):
 
    ```bash
+   # Legislators
    node -e "
      const yaml = require('js-yaml');
      const fs   = require('fs');
@@ -149,35 +173,49 @@ The file `public/legislators-current.json` is a point-in-time snapshot and must 
      fs.writeFileSync('public/legislators-current.json', JSON.stringify(data));
      console.log('Written:', data.length, 'legislators');
    "
+
+   # Committee memberships
+   node -e "
+     const yaml = require('js-yaml');
+     const fs   = require('fs');
+     const committees  = yaml.load(fs.readFileSync('committees-current.yaml', 'utf8'));
+     const memberships = yaml.load(fs.readFileSync('committee-membership-current.yaml', 'utf8'));
+     const nameMap = {};
+     for (const c of committees) {
+       nameMap[c.thomas_id] = c.name;
+       for (const sub of (c.subcommittees || [])) {
+         nameMap[c.thomas_id + sub.thomas_id] = sub.name;
+       }
+     }
+     const result = {};
+     for (const [comId, members] of Object.entries(memberships)) {
+       for (const m of members) {
+         const name = nameMap[comId];
+         if (!name) continue;
+         if (!result[m.bioguide]) result[m.bioguide] = [];
+         if (!result[m.bioguide].includes(name)) result[m.bioguide].push(name);
+       }
+     }
+     fs.writeFileSync('public/legislator-committees.json', JSON.stringify(result));
+     console.log('Written:', Object.keys(result).length, 'legislators with committee data');
+   "
    ```
 
-3. **Verify the count** (expect 535–540 for a full Congress):
+3. **Verify the counts:**
 
    ```bash
    node -e "const d=require('./public/legislators-current.json'); console.log(d.length, 'legislators');"
+   node -e "const d=require('./public/legislator-committees.json'); console.log(Object.keys(d).length, 'with committees');"
    ```
 
 4. **Clean up and commit:**
 
    ```bash
-   rm legislators-current.yaml
-   git add public/legislators-current.json
-   git commit -m "Update legislators-current.json to <Month Year>"
+   rm legislators-current.yaml committees-current.yaml committee-membership-current.yaml
+   git add public/legislators-current.json public/legislator-committees.json
+   git commit -m "Update congressional data to <Month Year>"
    git push
    ```
-
-**One-liner (steps 1–2 combined):**
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/unitedstates/congress-legislators/main/legislators-current.yaml -o legislators-current.yaml && \
-node -e "
-  const yaml=require('js-yaml'),fs=require('fs');
-  const data=yaml.load(fs.readFileSync('legislators-current.yaml','utf8'));
-  fs.writeFileSync('public/legislators-current.json',JSON.stringify(data));
-  console.log('Written:',data.length,'legislators');
-" && \
-rm legislators-current.yaml
-```
 
 ---
 

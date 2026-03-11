@@ -25,6 +25,7 @@ export interface Official {
   photoUrl: string | null;
   contactUrl: string | null;
   address: OfficialAddress | null;
+  committees: string[];
 }
 
 export interface OfficialsResult {
