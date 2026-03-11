@@ -77,7 +77,7 @@ export function MessageTemplatePanel({
           readOnly
           value={previewBody}
           rows={12}
-          className="w-full px-5 py-4 text-sm text-gray-700 leading-relaxed font-mono resize-none focus:outline-none bg-white"
+          className="w-full px-5 py-4 text-base sm:text-sm text-gray-700 leading-relaxed font-mono resize-none focus:outline-none bg-white"
         />
       </div>
 

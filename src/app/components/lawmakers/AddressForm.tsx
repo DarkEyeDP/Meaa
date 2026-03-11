@@ -62,7 +62,7 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
   };
 
   const inputCls = (key: keyof AddressFormValues) =>
-    `w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A227] transition-colors bg-white ${
+    `w-full px-4 py-3 border rounded-lg text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A227] transition-colors bg-white ${
       errors[key] ? "border-red-400" : "border-gray-300 hover:border-gray-400"
     }`;
 

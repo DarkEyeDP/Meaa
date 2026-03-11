@@ -78,7 +78,7 @@ export function Footer() {
               <input
                 type="email"
                 placeholder="Your email"
-                className="px-4 py-2 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A227]"
+                className="px-4 py-2 rounded bg-white/10 border border-white/20 text-base sm:text-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A227]"
               />
               <button className="bg-[#C9A227] text-[#0B1F3A] px-4 py-2 rounded font-semibold hover:bg-[#b39020] transition-colors">
                 Subscribe
