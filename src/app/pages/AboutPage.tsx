@@ -122,9 +122,17 @@ export function AboutPage() {
             <p>
               Without dedicated advocacy, these issues often receive less attention than officer-focused policies. MEAA ensures enlisted voices are heard when Congress debates the National Defense Authorization Act, when DoD proposes regulation changes, and when military compensation is reviewed.
             </p>
-            <p className="font-semibold text-[#0B1F3A]">
-              Enlisted personnel make up 82% of the active duty force. Their representation in Washington should reflect that reality.
-            </p>
+          </div>
+
+          {/* 82% Stat Callout */}
+          <div className="max-w-4xl mx-auto mt-12 bg-[#0B1F3A] rounded-2xl px-8 py-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+            <div className="flex-shrink-0">
+              <span className="text-8xl md:text-9xl font-bold text-[#C9A227] leading-none">82%</span>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-white mb-2">of the active duty force is enlisted.</p>
+              <p className="text-gray-300 text-lg">Their representation in Washington should reflect that reality. MEAA exists to close that gap.</p>
+            </div>
           </div>
         </div>
       </section>

@@ -1,7 +1,22 @@
 import { Link, useLocation } from "react-router";
-import { Menu, X, ChevronDown, Newspaper, TrendingUp, BookOpen, Radio } from "lucide-react";
+import { Menu, X, ChevronDown, Newspaper, TrendingUp, BookOpen, Radio, Flag, ListChecks } from "lucide-react";
 import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
+
+const policyDropdownItems = [
+  {
+    path: "/policy",
+    label: "Policy & Advocacy",
+    description: "Our priorities, legislative engagement, and congressional outreach",
+    icon: Flag,
+  },
+  {
+    path: "/policy-tracker",
+    label: "Policy Tracker",
+    description: "Track legislation affecting enlisted service members in real time",
+    icon: ListChecks,
+  },
+];
 
 const newsDropdownItems = [
   {
@@ -33,14 +48,14 @@ const newsDropdownItems = [
 export function Header() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [policyDropdownOpen, setPolicyDropdownOpen] = useState(false);
   const [newsDropdownOpen, setNewsDropdownOpen] = useState(false);
+  const policyCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const navLinks = [
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
-    { path: "/policy", label: "Policy & Advocacy" },
-    { path: "/policy-tracker", label: "Policy Tracker" },
     { path: "/membership", label: "Membership" },
     { path: "/contact", label: "Contact" },
   ];
@@ -50,7 +65,16 @@ export function Header() {
     return location.pathname === path || location.pathname.startsWith(path + "/");
   };
 
+  const isPolicyActive = policyDropdownItems.some((item) => isActive(item.path));
   const isNewsActive = newsDropdownItems.some((item) => isActive(item.path));
+
+  const openPolicyDropdown = () => {
+    if (policyCloseTimer.current) clearTimeout(policyCloseTimer.current);
+    setPolicyDropdownOpen(true);
+  };
+  const closePolicyDropdown = () => {
+    policyCloseTimer.current = setTimeout(() => setPolicyDropdownOpen(false), 120);
+  };
 
   const openDropdown = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -78,7 +102,8 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            {navLinks.slice(0, 5).map((link) => (
+            {/* Home, About */}
+            {navLinks.slice(0, 2).map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -92,27 +117,72 @@ export function Header() {
               </Link>
             ))}
 
-            {/* News & Insights Dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={openDropdown}
-              onMouseLeave={closeDropdown}
+            {/* Policy & Advocacy Dropdown */}
+            <div className="relative" onMouseEnter={openPolicyDropdown} onMouseLeave={closePolicyDropdown}>
+              <button
+                onClick={() => setPolicyDropdownOpen((o) => !o)}
+                className={`flex items-center gap-1 px-3 py-2 rounded transition-colors whitespace-nowrap text-sm ${
+                  isPolicyActive ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
+                }`}
+              >
+                Policy & Advocacy
+                <ChevronDown size={14} className={`transition-transform duration-200 ${policyDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {policyDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    onMouseEnter={openPolicyDropdown}
+                    onMouseLeave={closePolicyDropdown}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden z-50"
+                  >
+                    {policyDropdownItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        onClick={() => setPolicyDropdownOpen(false)}
+                        className={`flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors group ${isActive(item.path) ? "bg-amber-50" : ""}`}
+                      >
+                        <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                          isActive(item.path) ? "bg-[#C9A227]" : "bg-gray-100 group-hover:bg-[#C9A227]"
+                        }`}>
+                          <item.icon size={15} className={isActive(item.path) ? "text-[#0B1F3A]" : "text-gray-600 group-hover:text-[#0B1F3A]"} />
+                        </div>
+                        <div>
+                          <div className={`text-sm font-semibold ${isActive(item.path) ? "text-[#C9A227]" : "text-[#0B1F3A]"}`}>{item.label}</div>
+                          <div className="text-xs text-gray-500 leading-snug mt-0.5">{item.description}</div>
+                        </div>
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Membership */}
+            <Link
+              to="/membership"
+              className={`px-3 py-2 rounded transition-colors whitespace-nowrap text-sm ${
+                isActive("/membership") ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
+              }`}
             >
+              Membership
+            </Link>
+
+            {/* News & Insights Dropdown */}
+            <div className="relative" onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
               <button
                 onClick={() => setNewsDropdownOpen((o) => !o)}
                 className={`flex items-center gap-1 px-3 py-2 rounded transition-colors whitespace-nowrap text-sm ${
-                  isNewsActive
-                    ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
-                    : "hover:bg-[#1a3352]"
+                  isNewsActive ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
                 }`}
               >
                 News & Insights
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-200 ${newsDropdownOpen ? "rotate-180" : ""}`}
-                />
+                <ChevronDown size={14} className={`transition-transform duration-200 ${newsDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-
               <AnimatePresence>
                 {newsDropdownOpen && (
                   <motion.div
@@ -129,9 +199,7 @@ export function Header() {
                         key={item.path}
                         to={item.path}
                         onClick={() => setNewsDropdownOpen(false)}
-                        className={`flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors group ${
-                          isActive(item.path) ? "bg-amber-50" : ""
-                        }`}
+                        className={`flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors group ${isActive(item.path) ? "bg-amber-50" : ""}`}
                       >
                         <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
                           isActive(item.path) ? "bg-[#C9A227]" : "bg-gray-100 group-hover:bg-[#C9A227]"
@@ -139,9 +207,7 @@ export function Header() {
                           <item.icon size={15} className={isActive(item.path) ? "text-[#0B1F3A]" : "text-gray-600 group-hover:text-[#0B1F3A]"} />
                         </div>
                         <div>
-                          <div className={`text-sm font-semibold ${isActive(item.path) ? "text-[#C9A227]" : "text-[#0B1F3A]"}`}>
-                            {item.label}
-                          </div>
+                          <div className={`text-sm font-semibold ${isActive(item.path) ? "text-[#C9A227]" : "text-[#0B1F3A]"}`}>{item.label}</div>
                           <div className="text-xs text-gray-500 leading-snug mt-0.5">{item.description}</div>
                         </div>
                       </Link>
@@ -151,19 +217,15 @@ export function Header() {
               </AnimatePresence>
             </div>
 
-            {navLinks.slice(5).map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`px-3 py-2 rounded transition-colors whitespace-nowrap text-sm ${
-                  isActive(link.path)
-                    ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
-                    : "hover:bg-[#1a3352]"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {/* Contact */}
+            <Link
+              to="/contact"
+              className={`px-3 py-2 rounded transition-colors whitespace-nowrap text-sm ${
+                isActive("/contact") ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
+              }`}
+            >
+              Contact
+            </Link>
           </nav>
 
           {/* CTA Button */}
@@ -194,20 +256,49 @@ export function Header() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="lg:hidden absolute top-20 left-0 right-0 bg-[#0B1F3A] shadow-[0_8px_24px_rgba(0,0,0,0.4)] pb-4 px-4 space-y-1 z-50"
           >
-            {navLinks.slice(0, 5).map((link) => (
+            {/* Home, About */}
+            {navLinks.slice(0, 2).map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block px-4 py-2 rounded transition-colors ${
-                  isActive(link.path)
-                    ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
-                    : "hover:bg-[#1a3352]"
+                  isActive(link.path) ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
                 }`}
               >
                 {link.label}
               </Link>
             ))}
+
+            {/* Mobile Policy & Advocacy group */}
+            <div className="pt-1 pb-1">
+              <div className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                Policy & Advocacy
+              </div>
+              {policyDropdownItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block pl-8 pr-4 py-2 rounded transition-colors text-sm ${
+                    isActive(item.path) ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Membership */}
+            <Link
+              to="/membership"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-4 py-2 rounded transition-colors ${
+                isActive("/membership") ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
+              }`}
+            >
+              Membership
+            </Link>
 
             {/* Mobile News & Insights group */}
             <div className="pt-1 pb-1">
@@ -220,9 +311,7 @@ export function Header() {
                   to={item.path}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block pl-8 pr-4 py-2 rounded transition-colors text-sm ${
-                    isActive(item.path)
-                      ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
-                      : "hover:bg-[#1a3352]"
+                    isActive(item.path) ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
                   }`}
                 >
                   {item.label}
@@ -230,20 +319,16 @@ export function Header() {
               ))}
             </div>
 
-            {navLinks.slice(5).map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`block px-4 py-2 rounded transition-colors ${
-                  isActive(link.path)
-                    ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
-                    : "hover:bg-[#1a3352]"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {/* Contact */}
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-4 py-2 rounded transition-colors ${
+                isActive("/contact") ? "bg-[#C9A227] text-[#0B1F3A] font-semibold" : "hover:bg-[#1a3352]"
+              }`}
+            >
+              Contact
+            </Link>
 
             <Link
               to="/membership"

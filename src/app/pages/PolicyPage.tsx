@@ -232,6 +232,15 @@ export function PolicyPage() {
               <p className="text-gray-700">Direct feedback from enlisted members and families on policy priorities.</p>
             </div>
           </div>
+          <div className="text-center mt-10">
+            <Link
+              to="/research"
+              className="inline-flex items-center bg-[#0B1F3A] text-white px-8 py-3 rounded font-semibold hover:bg-[#1a3352] transition-colors"
+            >
+              View All Research & Reports
+              <Building2 className="ml-2" size={18} />
+            </Link>
+          </div>
         </div>
       </section>
 
