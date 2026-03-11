@@ -226,13 +226,13 @@ export function PolicyTrackerPage() {
             <span className="text-gray-900">{bill.title}</span>
           </td>
           <td className="px-6 py-4">
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(bill.category)}`}>
+            <span className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getCategoryColor(bill.category)}`}>
               {bill.category}
             </span>
           </td>
-          <td className="px-6 py-4 text-gray-700">{bill.sponsor}</td>
+          <td className="px-6 py-4 text-gray-700 whitespace-nowrap">{bill.sponsor}</td>
           <td className="px-6 py-4">
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(bill.status)}`}>
+            <span className={`px-3 py-1 rounded-full text-xs font-semibold border whitespace-nowrap ${getStatusColor(bill.status)}`}>
               {bill.status}
             </span>
           </td>

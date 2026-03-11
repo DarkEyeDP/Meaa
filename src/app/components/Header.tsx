@@ -20,7 +20,7 @@ export function Header() {
     if (path === "/") {
       return location.pathname === path;
     }
-    return location.pathname.startsWith(path);
+    return location.pathname === path || location.pathname.startsWith(path + "/");
   };
 
   return (
@@ -44,7 +44,7 @@ export function Header() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-4 py-2 rounded transition-colors ${
+                className={`px-3 py-2 rounded transition-colors whitespace-nowrap text-sm ${
                   isActive(link.path)
                     ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
                     : "hover:bg-[#1a3352]"
@@ -58,7 +58,7 @@ export function Header() {
           {/* CTA Button */}
           <Link
             to="/membership"
-            className="hidden lg:block bg-[#C9A227] text-[#0B1F3A] px-6 py-2 rounded font-semibold hover:bg-[#b39020] transition-colors"
+            className="hidden lg:block border-2 border-[#C9A227] text-[#C9A227] px-6 py-2 rounded font-semibold hover:bg-[#C9A227] hover:text-[#0B1F3A] transition-colors"
           >
             Join MEAA
           </Link>
