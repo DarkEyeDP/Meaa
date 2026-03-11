@@ -25,6 +25,8 @@ export function FindYourLawmakers() {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [selectedIssue, setSelectedIssue] = useState<IssueSlug | null>(null);
   const [userName, setUserName] = useState("");
+  const [userPhone, setUserPhone] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [userState, setUserState] = useState("");
 
   const handleSubmit = async (values: AddressFormValues) => {
@@ -102,21 +104,6 @@ export function FindYourLawmakers() {
             onSubmit={handleSubmit}
             isLoading={lookupState === "loading"}
           />
-
-          {/* Optional: name field for template personalization */}
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Your Name{" "}
-              <span className="text-gray-400 font-normal">(optional — for message personalization)</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Sgt. Maria Rodriguez"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              className="w-full sm:w-72 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A227] bg-white"
-            />
-          </div>
         </div>
       </section>
 
@@ -234,6 +221,45 @@ export function FindYourLawmakers() {
                 </p>
               </div>
 
+              <div className="mb-6 p-5 bg-white rounded-xl border border-gray-200 shadow-sm">
+                <p className="text-sm font-semibold text-[#0B1F3A] mb-4">
+                  Your Contact Info{" "}
+                  <span className="text-gray-400 font-normal">(optional — included in your message signature)</span>
+                </p>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Name</label>
+                    <input
+                      type="text"
+                      placeholder="Sgt. Maria Rodriguez"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A227] bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Phone</label>
+                    <input
+                      type="tel"
+                      placeholder="555-867-5309"
+                      value={userPhone}
+                      onChange={(e) => setUserPhone(e.target.value)}
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A227] bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Email</label>
+                    <input
+                      type="email"
+                      placeholder="maria@example.com"
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A227] bg-white"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <IssueSelector
                 selected={selectedIssue}
                 onSelect={handleIssueSelect}
@@ -244,6 +270,8 @@ export function FindYourLawmakers() {
                   selectedIssue={selectedIssue}
                   officials={allOfficials}
                   userName={userName}
+                  userPhone={userPhone}
+                  userEmail={userEmail}
                   userState={userState}
                   onCopied={(issue) =>
                     trackEvent("message_copied", { issue })

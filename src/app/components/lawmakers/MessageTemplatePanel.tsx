@@ -9,6 +9,8 @@ interface Props {
   officials: Official[];
   userName: string;
   userState: string;
+  userPhone: string;
+  userEmail: string;
   onCopied?: (issue: IssueSlug) => void;
   onContactOpened?: (officeName: string) => void;
 }
@@ -18,6 +20,8 @@ export function MessageTemplatePanel({
   officials,
   userName,
   userState,
+  userPhone,
+  userEmail,
   onCopied,
   onContactOpened,
 }: Props) {
@@ -26,7 +30,7 @@ export function MessageTemplatePanel({
   const template = messageTemplates[selectedIssue];
 
   const copyMessage = async (recipientName: string) => {
-    const body = renderTemplate(template.body, { recipientName, userName, userState });
+    const body = renderTemplate(template.body, { recipientName, userName, userState, userPhone, userEmail });
     await navigator.clipboard.writeText(body);
     setCopied(true);
     onCopied?.(selectedIssue);
@@ -34,7 +38,7 @@ export function MessageTemplatePanel({
   };
 
   const copyGeneric = async () => {
-    const body = renderTemplate(template.body, { userName, userState });
+    const body = renderTemplate(template.body, { userName, userState, userPhone, userEmail });
     await navigator.clipboard.writeText(body);
     setCopied(true);
     onCopied?.(selectedIssue);
@@ -42,7 +46,7 @@ export function MessageTemplatePanel({
   };
 
   // Preview rendered with generic placeholders
-  const previewBody = renderTemplate(template.body, { userName, userState });
+  const previewBody = renderTemplate(template.body, { userName, userState, userPhone, userEmail });
 
   return (
     <div className="mt-6 space-y-6">
@@ -92,6 +96,8 @@ export function MessageTemplatePanel({
               recipientName: official.name,
               userName,
               userState,
+              userPhone,
+              userEmail,
             });
 
             return (
@@ -163,6 +169,8 @@ export function MessageTemplatePanel({
               recipientName: officials[0]?.name ?? "your representative",
               userName,
               userState,
+              userPhone,
+              userEmail,
             })}
           </p>
         </div>

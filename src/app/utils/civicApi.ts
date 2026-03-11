@@ -60,7 +60,7 @@ function normalizeToOfficial(l: Legislator, chamber: "Senate" | "House"): Offici
     phones: term.phone ? [term.phone] : [],
     urls,
     emails: [],
-    photoUrl: null,
+    photoUrl: `https://bioguide.congress.gov/bioguide/photo/${l.id.bioguide[0]}/${l.id.bioguide}.jpg`,
     contactUrl: term.contact_form ?? urls[0] ?? null,
     address: null,
   };

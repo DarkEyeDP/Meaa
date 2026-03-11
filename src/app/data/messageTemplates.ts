@@ -16,7 +16,7 @@ Our enlisted service members and their families deserve compensation that reflec
 
 Respectfully,
 {{userName}}
-{{userState}}`,
+{{userState}}{{userContactInfo}}`,
     phoneScript: `Hello, my name is {{userName}} and I am a constituent calling from {{userState}}. I am asking {{recipientName}} to support strong enlisted military pay in the NDAA and to oppose any cuts to service member compensation. Thank you for your time.`,
   },
 
@@ -35,7 +35,7 @@ Housing stability is a readiness issue. Enlisted families deserve to live in saf
 
 Respectfully,
 {{userName}}
-{{userState}}`,
+{{userState}}{{userContactInfo}}`,
     phoneScript: `Hello, my name is {{userName}} from {{userState}}. I am calling to ask that {{recipientName}} support policies to improve Basic Allowance for Housing adequacy and address the military housing shortage affecting enlisted families. Thank you.`,
   },
 
@@ -54,7 +54,7 @@ Healthcare is a fundamental part of the military's promise to those who serve. P
 
 Respectfully,
 {{userName}}
-{{userState}}`,
+{{userState}}{{userContactInfo}}`,
     phoneScript: `Hello, my name is {{userName}} from {{userState}}. I am calling to ask {{recipientName}} to oppose TRICARE cost increases for active duty enlisted families and to support expanded access to behavioral health services for service members. Thank you.`,
   },
 
@@ -73,7 +73,7 @@ Strong families are the foundation of a strong military. Investing in family sup
 
 Respectfully,
 {{userName}}
-{{userState}}`,
+{{userState}}{{userContactInfo}}`,
     phoneScript: `Hello, my name is {{userName}} from {{userState}}. I am calling to ask {{recipientName}} to support expanded childcare access and military spouse employment protections in the upcoming NDAA. Thank you.`,
   },
 
@@ -92,7 +92,7 @@ Enlisted veterans have given years of their lives in service to this nation. The
 
 Respectfully,
 {{userName}}
-{{userState}}`,
+{{userState}}{{userContactInfo}}`,
     phoneScript: `Hello, my name is {{userName}} from {{userState}}. I am calling to ask {{recipientName}} to support improved transition assistance for enlisted veterans and to oppose any reductions to GI Bill education benefits. Thank you.`,
   },
 };

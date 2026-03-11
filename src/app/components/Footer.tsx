@@ -43,6 +43,11 @@ export function Footer() {
                   News & Insights
                 </Link>
               </li>
+              <li>
+                <Link to="/find-your-lawmakers" className="text-gray-300 hover:text-[#C9A227] transition-colors">
+                  Find Your Lawmakers
+                </Link>
+              </li>
             </ul>
           </div>
 
