@@ -1,4 +1,5 @@
 import { Target, Users, Flag, TrendingUp } from "lucide-react";
+import { Link } from "react-router";
 
 export function AboutPage() {
   const leadershipTeam = [
@@ -154,15 +155,33 @@ export function AboutPage() {
       </section>
 
       {/* National Impact Vision */}
-      <section className="py-16 bg-[#0B1F3A] text-white">
+      <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">National Impact Vision</h2>
-          <p className="text-xl text-gray-200 mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-6">National Impact Vision</h2>
+          <p className="text-xl text-gray-700 mb-8">
             MEAA is building a national infrastructure to advocate for enlisted personnel across all policy domains: from Capitol Hill to the Pentagon, from state legislatures to local communities.
           </p>
-          <p className="text-lg text-gray-300">
+          <p className="text-lg text-gray-600">
             Our goal is simple: ensure every policy decision affecting military life includes enlisted perspectives—and that those perspectives carry weight equal to their representation in uniform.
           </p>
+        </div>
+      </section>
+
+      {/* Join CTA */}
+      <section className="py-16 bg-[#C9A227]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-6">
+            Join the Association
+          </h2>
+          <p className="text-xl text-[#0B1F3A] mb-8">
+            Your membership strengthens our voice in Washington. Together, we ensure enlisted service members have the representation they deserve.
+          </p>
+          <Link
+            to="/membership"
+            className="inline-block bg-[#0B1F3A] text-white px-8 py-4 rounded text-lg font-semibold hover:bg-[#1a3352] transition-colors"
+          >
+            Become a Member Today
+          </Link>
         </div>
       </section>
     </div>

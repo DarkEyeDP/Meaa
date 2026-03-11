@@ -130,14 +130,32 @@ export function InsightsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#0B1F3A] text-white">
+      <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Contribute Your Expertise</h2>
-          <p className="text-xl text-gray-200 mb-8">
+          <h2 className="text-3xl font-bold text-[#0B1F3A] mb-4">Contribute Your Expertise</h2>
+          <p className="text-xl text-gray-700 mb-8">
             Are you a policy expert, researcher, or veteran with insights to share? MEAA welcomes guest contributors.
           </p>
-          <Link to="/contact" className="inline-block bg-[#C9A227] text-[#0B1F3A] px-8 py-4 rounded font-semibold hover:bg-[#b39020] transition-colors">
+          <Link to="/contact" className="inline-block bg-[#0B1F3A] text-white px-8 py-4 rounded font-semibold hover:bg-[#1a3352] transition-colors">
             Get in Touch
+          </Link>
+        </div>
+      </section>
+
+      {/* Join CTA */}
+      <section className="py-16 bg-[#C9A227]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-6">
+            Join the Association
+          </h2>
+          <p className="text-xl text-[#0B1F3A] mb-8">
+            Your membership strengthens our voice in Washington. Together, we ensure enlisted service members have the representation they deserve.
+          </p>
+          <Link
+            to="/membership"
+            className="inline-block bg-[#0B1F3A] text-white px-8 py-4 rounded text-lg font-semibold hover:bg-[#1a3352] transition-colors"
+          >
+            Become a Member Today
           </Link>
         </div>
       </section>

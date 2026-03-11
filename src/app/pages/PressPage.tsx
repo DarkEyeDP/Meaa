@@ -142,6 +142,24 @@ export function PressPage() {
           </Link>
         </div>
       </section>
+
+      {/* Join CTA */}
+      <section className="py-16 bg-[#C9A227]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-6">
+            Join the Association
+          </h2>
+          <p className="text-xl text-[#0B1F3A] mb-8">
+            Your membership strengthens our voice in Washington. Together, we ensure enlisted service members have the representation they deserve.
+          </p>
+          <Link
+            to="/membership"
+            className="inline-block bg-[#0B1F3A] text-white px-8 py-4 rounded text-lg font-semibold hover:bg-[#1a3352] transition-colors"
+          >
+            Become a Member Today
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

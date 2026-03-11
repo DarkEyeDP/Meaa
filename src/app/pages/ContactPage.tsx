@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin, Send, Users, Briefcase, Newspaper } from "lucide-react";
+import { Link } from "react-router";
 
 export function ContactPage() {
   const contactOptions = [
@@ -14,14 +15,14 @@ export function ContactPage() {
       title: "Partner with Us",
       description: "Collaborate on advocacy initiatives and policy research.",
       action: "Learn About Partnerships",
-      link: "#",
+      link: "/contact",
     },
     {
       icon: Newspaper,
       title: "Media Inquiries",
       description: "Press contacts and interview requests.",
       action: "Contact Media Team",
-      link: "#",
+      link: "/press",
     },
   ];
 
@@ -51,12 +52,12 @@ export function ContactPage() {
                 </div>
                 <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">{option.title}</h3>
                 <p className="text-gray-700 mb-6 flex-1">{option.description}</p>
-                <a
-                  href={option.link}
+                <Link
+                  to={option.link}
                   className="inline-block bg-[#0B1F3A] text-white px-6 py-2 rounded font-semibold hover:bg-[#1a3352] transition-colors"
                 >
                   {option.action}
-                </a>
+                </Link>
               </div>
             ))}
           </div>
@@ -237,12 +238,12 @@ export function ContactPage() {
           <p className="text-xl text-[#0B1F3A] mb-8">
             Join MEAA and help ensure enlisted service members have the representation they deserve in Washington.
           </p>
-          <a
-            href="/membership"
+          <Link
+            to="/membership"
             className="inline-block bg-[#0B1F3A] text-white px-8 py-4 rounded text-lg font-semibold hover:bg-[#1a3352] transition-colors"
           >
             Become a Member
-          </a>
+          </Link>
         </div>
       </section>
     </div>

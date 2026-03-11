@@ -212,24 +212,24 @@ export function PolicyPage() {
       </section>
 
       {/* Research and Reports */}
-      <section className="py-16 bg-[#0B1F3A] text-white">
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Research & Reports</h2>
-          <p className="text-xl text-gray-200 text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-8 text-center">Research & Reports</h2>
+          <p className="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-12">
             MEAA produces original research and policy analysis on issues affecting enlisted service members. Our reports inform congressional debates and DoD policy decisions.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
-              <h3 className="font-bold text-xl text-[#C9A227] mb-2">Annual Reports</h3>
-              <p className="text-gray-200">Comprehensive analysis of enlisted quality of life issues and policy recommendations.</p>
+            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <h3 className="font-bold text-xl text-[#0B1F3A] mb-2">Annual Reports</h3>
+              <p className="text-gray-700">Comprehensive analysis of enlisted quality of life issues and policy recommendations.</p>
             </div>
-            <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
-              <h3 className="font-bold text-xl text-[#C9A227] mb-2">Issue Briefs</h3>
-              <p className="text-gray-200">Focused research on specific topics like housing, healthcare, and compensation.</p>
+            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <h3 className="font-bold text-xl text-[#0B1F3A] mb-2">Issue Briefs</h3>
+              <p className="text-gray-700">Focused research on specific topics like housing, healthcare, and compensation.</p>
             </div>
-            <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
-              <h3 className="font-bold text-xl text-[#C9A227] mb-2">Survey Data</h3>
-              <p className="text-gray-200">Direct feedback from enlisted members and families on policy priorities.</p>
+            <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <h3 className="font-bold text-xl text-[#0B1F3A] mb-2">Survey Data</h3>
+              <p className="text-gray-700">Direct feedback from enlisted members and families on policy priorities.</p>
             </div>
           </div>
         </div>
