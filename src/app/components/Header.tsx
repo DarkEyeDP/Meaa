@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
 export function Header() {
   const location = useLocation();
@@ -72,9 +73,18 @@ export function Header() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+      </div>
+
+      {/* Mobile Navigation Overlay */}
+      <AnimatePresence>
         {mobileMenuOpen && (
-          <nav className="lg:hidden pb-4 space-y-2">
+          <motion.nav
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="lg:hidden absolute top-20 left-0 right-0 bg-[#0B1F3A] shadow-[0_8px_24px_rgba(0,0,0,0.4)] pb-4 px-4 space-y-2 z-50"
+          >
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -92,13 +102,13 @@ export function Header() {
             <Link
               to="/membership"
               onClick={() => setMobileMenuOpen(false)}
-              className="block bg-[#C9A227] text-[#0B1F3A] px-4 py-2 rounded font-semibold text-center"
+              className="block border-2 border-[#C9A227] text-[#C9A227] px-4 py-2 rounded font-semibold text-center hover:bg-[#C9A227] hover:text-[#0B1F3A] transition-colors"
             >
               Join MEAA
             </Link>
-          </nav>
+          </motion.nav>
         )}
-      </div>
+      </AnimatePresence>
     </header>
   );
 }

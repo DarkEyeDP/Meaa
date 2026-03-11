@@ -96,35 +96,29 @@ export function PolicyPage() {
       </section>
 
       {/* Current Policy Priorities */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-12 text-center">
             Current Policy Priorities
           </h2>
-          <div className="space-y-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {policyPriorities.map((priority, index) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-6 md:p-8 border-l-4 border-[#C9A227]">
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-[#C9A227] rounded-lg flex items-center justify-center">
-                      <priority.icon className="text-[#0B1F3A]" size={24} />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3">{priority.title}</h3>
-                    <p className="text-lg text-gray-700 mb-4">{priority.description}</p>
-                    <div className="space-y-2">
-                      <p className="font-semibold text-[#0B1F3A]">Current Actions:</p>
-                      <ul className="space-y-2">
-                        {priority.actions.map((action, idx) => (
-                          <li key={idx} className="flex items-start text-gray-700">
-                            <span className="text-[#C9A227] mr-2">•</span>
-                            <span>{action}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+              <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <div className="w-12 h-12 bg-[#C9A227] rounded-lg flex items-center justify-center mb-4">
+                  <priority.icon className="text-[#0B1F3A]" size={24} />
+                </div>
+                <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">{priority.title}</h3>
+                <p className="text-gray-700 mb-4">{priority.description}</p>
+                <div className="space-y-2">
+                  <p className="font-semibold text-[#0B1F3A] text-sm">Current Actions:</p>
+                  <ul className="space-y-2">
+                    {priority.actions.map((action, idx) => (
+                      <li key={idx} className="flex items-start text-gray-700 text-sm">
+                        <span className="text-[#C9A227] mr-2">•</span>
+                        <span>{action}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             ))}
