@@ -161,7 +161,7 @@ export function AboutPage() {
           <p className="text-xl text-gray-700 mb-8">
             MEAA is building a national infrastructure to advocate for enlisted personnel across all policy domains: from Capitol Hill to the Pentagon, from state legislatures to local communities.
           </p>
-          <p className="text-lg text-gray-600">
+          <p className="text-xl text-gray-700">
             Our goal is simple: ensure every policy decision affecting military life includes enlisted perspectives—and that those perspectives carry weight equal to their representation in uniform.
           </p>
         </div>

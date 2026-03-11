@@ -160,27 +160,27 @@ export function MembershipPage() {
           <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-12 text-center">
             Membership Options
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
             {membershipTiers.map((tier, index) => (
-              <div 
-                key={index} 
-                className={`bg-white rounded-lg shadow-lg overflow-hidden border-2 ${
-                  index === 0 ? 'border-[#C9A227] transform md:scale-105' : 'border-gray-200'
+              <div
+                key={index}
+                className={`bg-white rounded-lg shadow-lg overflow-hidden border-2 flex flex-col transition-all duration-200 hover:scale-105 hover:shadow-xl ${
+                  index === 0 ? 'border-[#C9A227]' : 'border-gray-200 hover:border-[#C9A227]'
                 }`}
               >
                 <div className={`p-6 ${index === 0 ? 'bg-[#C9A227]' : 'bg-gray-50'}`}>
-                  <h3 className={`text-2xl font-bold mb-2 ${index === 0 ? 'text-[#0B1F3A]' : 'text-[#0B1F3A]'}`}>
+                  <h3 className="text-2xl font-bold mb-2 text-[#0B1F3A]">
                     {tier.name}
                   </h3>
                   <p className={`text-sm ${index === 0 ? 'text-[#0B1F3A]' : 'text-gray-600'}`}>
                     {tier.description}
                   </p>
-                  <div className={`text-4xl font-bold mt-4 ${index === 0 ? 'text-[#0B1F3A]' : 'text-[#0B1F3A]'}`}>
+                  <div className="text-4xl font-bold mt-4 text-[#0B1F3A]">
                     {tier.price}
                   </div>
                 </div>
-                <div className="p-6">
-                  <ul className="space-y-3 mb-6">
+                <div className="p-6 flex flex-col flex-1">
+                  <ul className="space-y-3 flex-1">
                     {tier.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start">
                         <Check className="text-[#C9A227] mr-2 flex-shrink-0 mt-0.5" size={20} />
@@ -188,7 +188,7 @@ export function MembershipPage() {
                       </li>
                     ))}
                   </ul>
-                  <button className="w-full bg-[#0B1F3A] text-white px-6 py-3 rounded font-semibold hover:bg-[#1a3352] transition-colors">
+                  <button className="w-full bg-[#0B1F3A] text-white px-6 py-3 rounded font-semibold hover:bg-[#1a3352] transition-colors mt-6">
                     Join Now
                   </button>
                 </div>

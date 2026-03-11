@@ -59,7 +59,7 @@ export function HomePage() {
       <section className="relative bg-[#0B1F3A] text-white">
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1615980215756-4d6069d4e872?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIwbWlsaXRhcnklMjBzZXJ2aWNlJTIwbWVtYmVycyUyMGVubGlzdGVkfGVufDF8fHx8MTc3MzE4NDM0NXww&ixlib=rb-4.1.0&q=80&w=1080"
+            src="https://d2cto119c3bgok.cloudfront.net/thumbs/photos/1412/1690454/1000w_q95.jpg"
             alt="Enlisted Service Members"
             className="w-full h-full object-cover opacity-20"
           />
