@@ -10,6 +10,7 @@ import { InsightsPage } from "./pages/InsightsPage";
 import { ResearchPage } from "./pages/ResearchPage";
 import { PressPage } from "./pages/PressPage";
 import { ContactPage } from "./pages/ContactPage";
+import { FindYourLawmakers } from "./pages/FindYourLawmakers";
 
 export const router = createBrowserRouter(
   [
@@ -21,6 +22,7 @@ export const router = createBrowserRouter(
         { path: "about", Component: AboutPage },
         { path: "policy", Component: PolicyPage },
         { path: "policy-tracker", Component: PolicyTrackerPage },
+        { path: "find-your-lawmakers", Component: FindYourLawmakers },
         { path: "membership", Component: MembershipPage },
         { path: "news", Component: NewsPage },
         { path: "insights", Component: InsightsPage },

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { Menu, X, ChevronDown, Newspaper, TrendingUp, BookOpen, Radio, Flag, ListChecks } from "lucide-react";
+import { Menu, X, ChevronDown, Newspaper, TrendingUp, BookOpen, Radio, Flag, ListChecks, MapPin } from "lucide-react";
 import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -15,6 +15,12 @@ const policyDropdownItems = [
     label: "Policy Tracker",
     description: "Track legislation affecting enlisted service members in real time",
     icon: ListChecks,
+  },
+  {
+    path: "/find-your-lawmakers",
+    label: "Find Your Lawmakers",
+    description: "Look up your members of Congress and send an advocacy message",
+    icon: MapPin,
   },
 ];
 
