@@ -5,6 +5,16 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>MEAA Site</title>
+      <script>
+        // GitHub Pages SPA redirect: restore path from sessionStorage set by 404.html
+        (function () {
+          var redirect = sessionStorage.redirect;
+          delete sessionStorage.redirect;
+          if (redirect && redirect !== location.href) {
+            history.replaceState(null, null, redirect);
+          }
+        })();
+      </script>
     </head>
 
     <body>
@@ -12,4 +22,3 @@
       <script type="module" src="/src/main.tsx"></script>
     </body>
   </html>
-  
