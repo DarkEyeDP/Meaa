@@ -1,11 +1,40 @@
 import { Link, useLocation } from "react-router";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, ChevronDown, Newspaper, TrendingUp, BookOpen, Radio } from "lucide-react";
+import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
+
+const newsDropdownItems = [
+  {
+    path: "/news",
+    label: "News",
+    description: "Policy developments and organizational announcements",
+    icon: Newspaper,
+  },
+  {
+    path: "/insights",
+    label: "Insights & Analysis",
+    description: "Expert commentary on military policy and legislation",
+    icon: TrendingUp,
+  },
+  {
+    path: "/research",
+    label: "Research & Reports",
+    description: "Long-form policy reports and research publications",
+    icon: BookOpen,
+  },
+  {
+    path: "/press",
+    label: "Press Center",
+    description: "Media resources, press releases, and statements",
+    icon: Radio,
+  },
+];
 
 export function Header() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [newsDropdownOpen, setNewsDropdownOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -13,15 +42,23 @@ export function Header() {
     { path: "/policy", label: "Policy & Advocacy" },
     { path: "/policy-tracker", label: "Policy Tracker" },
     { path: "/membership", label: "Membership" },
-    { path: "/news", label: "News & Insights" },
     { path: "/contact", label: "Contact" },
   ];
 
   const isActive = (path: string) => {
-    if (path === "/") {
-      return location.pathname === path;
-    }
+    if (path === "/") return location.pathname === path;
     return location.pathname === path || location.pathname.startsWith(path + "/");
+  };
+
+  const isNewsActive = newsDropdownItems.some((item) => isActive(item.path));
+
+  const openDropdown = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setNewsDropdownOpen(true);
+  };
+
+  const closeDropdown = () => {
+    closeTimer.current = setTimeout(() => setNewsDropdownOpen(false), 120);
   };
 
   return (
@@ -40,8 +77,81 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-1">
-            {navLinks.map((link) => (
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navLinks.slice(0, 5).map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`px-3 py-2 rounded transition-colors whitespace-nowrap text-sm ${
+                  isActive(link.path)
+                    ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
+                    : "hover:bg-[#1a3352]"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            {/* News & Insights Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={openDropdown}
+              onMouseLeave={closeDropdown}
+            >
+              <button
+                onClick={() => setNewsDropdownOpen((o) => !o)}
+                className={`flex items-center gap-1 px-3 py-2 rounded transition-colors whitespace-nowrap text-sm ${
+                  isNewsActive
+                    ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
+                    : "hover:bg-[#1a3352]"
+                }`}
+              >
+                News & Insights
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${newsDropdownOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              <AnimatePresence>
+                {newsDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    onMouseEnter={openDropdown}
+                    onMouseLeave={closeDropdown}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden z-50"
+                  >
+                    {newsDropdownItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        onClick={() => setNewsDropdownOpen(false)}
+                        className={`flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors group ${
+                          isActive(item.path) ? "bg-amber-50" : ""
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                          isActive(item.path) ? "bg-[#C9A227]" : "bg-gray-100 group-hover:bg-[#C9A227]"
+                        }`}>
+                          <item.icon size={15} className={isActive(item.path) ? "text-[#0B1F3A]" : "text-gray-600 group-hover:text-[#0B1F3A]"} />
+                        </div>
+                        <div>
+                          <div className={`text-sm font-semibold ${isActive(item.path) ? "text-[#C9A227]" : "text-[#0B1F3A]"}`}>
+                            {item.label}
+                          </div>
+                          <div className="text-xs text-gray-500 leading-snug mt-0.5">{item.description}</div>
+                        </div>
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {navLinks.slice(5).map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -59,7 +169,7 @@ export function Header() {
           {/* CTA Button */}
           <Link
             to="/membership"
-            className="hidden lg:block border-2 border-[#C9A227] text-[#C9A227] px-6 py-2 rounded font-semibold hover:bg-[#C9A227] hover:text-[#0B1F3A] transition-colors"
+            className="hidden lg:block border-2 border-[#C9A227] text-[#C9A227] px-6 py-2 rounded font-semibold hover:bg-[#C9A227] hover:text-[#0B1F3A] transition-colors whitespace-nowrap text-sm"
           >
             Join MEAA
           </Link>
@@ -72,7 +182,6 @@ export function Header() {
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-
       </div>
 
       {/* Mobile Navigation Overlay */}
@@ -83,9 +192,9 @@ export function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="lg:hidden absolute top-20 left-0 right-0 bg-[#0B1F3A] shadow-[0_8px_24px_rgba(0,0,0,0.4)] pb-4 px-4 space-y-2 z-50"
+            className="lg:hidden absolute top-20 left-0 right-0 bg-[#0B1F3A] shadow-[0_8px_24px_rgba(0,0,0,0.4)] pb-4 px-4 space-y-1 z-50"
           >
-            {navLinks.map((link) => (
+            {navLinks.slice(0, 5).map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -99,10 +208,47 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+
+            {/* Mobile News & Insights group */}
+            <div className="pt-1 pb-1">
+              <div className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                News & Insights
+              </div>
+              {newsDropdownItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block pl-8 pr-4 py-2 rounded transition-colors text-sm ${
+                    isActive(item.path)
+                      ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
+                      : "hover:bg-[#1a3352]"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            {navLinks.slice(5).map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-4 py-2 rounded transition-colors ${
+                  isActive(link.path)
+                    ? "bg-[#C9A227] text-[#0B1F3A] font-semibold"
+                    : "hover:bg-[#1a3352]"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+
             <Link
               to="/membership"
               onClick={() => setMobileMenuOpen(false)}
-              className="block border-2 border-[#C9A227] text-[#C9A227] px-4 py-2 rounded font-semibold text-center hover:bg-[#C9A227] hover:text-[#0B1F3A] transition-colors"
+              className="block border-2 border-[#C9A227] text-[#C9A227] px-4 py-2 rounded font-semibold text-center hover:bg-[#C9A227] hover:text-[#0B1F3A] transition-colors mt-2"
             >
               Join MEAA
             </Link>

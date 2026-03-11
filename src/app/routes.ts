@@ -6,6 +6,9 @@ import { PolicyPage } from "./pages/PolicyPage";
 import { PolicyTrackerPage } from "./pages/PolicyTrackerPage";
 import { MembershipPage } from "./pages/MembershipPage";
 import { NewsPage } from "./pages/NewsPage";
+import { InsightsPage } from "./pages/InsightsPage";
+import { ResearchPage } from "./pages/ResearchPage";
+import { PressPage } from "./pages/PressPage";
 import { ContactPage } from "./pages/ContactPage";
 
 export const router = createBrowserRouter(
@@ -20,6 +23,9 @@ export const router = createBrowserRouter(
         { path: "policy-tracker", Component: PolicyTrackerPage },
         { path: "membership", Component: MembershipPage },
         { path: "news", Component: NewsPage },
+        { path: "insights", Component: InsightsPage },
+        { path: "research", Component: ResearchPage },
+        { path: "press", Component: PressPage },
         { path: "contact", Component: ContactPage },
       ],
     },
