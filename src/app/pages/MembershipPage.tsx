@@ -142,7 +142,7 @@ export function MembershipPage() {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+              <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <div className="w-12 h-12 bg-[#C9A227] rounded-lg flex items-center justify-center mb-4">
                   <benefit.icon className="text-[#0B1F3A]" size={24} />
                 </div>
@@ -205,7 +205,7 @@ export function MembershipPage() {
             Who Should Join?
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <h3 className="text-2xl font-bold text-[#0B1F3A] mb-4">Current Enlisted Personnel</h3>
               <p className="text-gray-700 mb-4">
                 Active duty, Guard, and Reserve enlisted members from all branches who want their voices heard in Washington.
@@ -214,7 +214,7 @@ export function MembershipPage() {
                 Your perspective matters. Whether you're a junior enlisted member or a senior NCO, your experience informs our advocacy.
               </p>
             </div>
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <h3 className="text-2xl font-bold text-[#0B1F3A] mb-4">Veterans</h3>
               <p className="text-gray-700 mb-4">
                 Former enlisted service members who understand the challenges and want to support current enlisted personnel.
@@ -223,7 +223,7 @@ export function MembershipPage() {
                 Your experience navigating military and veteran benefits provides valuable insights for our advocacy work.
               </p>
             </div>
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <h3 className="text-2xl font-bold text-[#0B1F3A] mb-4">Military Families</h3>
               <p className="text-gray-700 mb-4">
                 Spouses, parents, and family members who support enlisted personnel and understand the unique challenges they face.
@@ -232,7 +232,7 @@ export function MembershipPage() {
                 Family perspectives are critical to our advocacy on healthcare, childcare, education, and quality of life.
               </p>
             </div>
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <h3 className="text-2xl font-bold text-[#0B1F3A] mb-4">Supporters & Advocates</h3>
               <p className="text-gray-700 mb-4">
                 Individuals who believe enlisted service members deserve dedicated national representation.

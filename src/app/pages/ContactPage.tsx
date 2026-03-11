@@ -45,12 +45,12 @@ export function ContactPage() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {contactOptions.map((option, index) => (
-              <div key={index} className="bg-white p-8 rounded-lg shadow-md text-center">
+              <div key={index} className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center flex flex-col">
                 <div className="w-16 h-16 bg-[#C9A227] rounded-full flex items-center justify-center mx-auto mb-4">
                   <option.icon className="text-[#0B1F3A]" size={32} />
                 </div>
                 <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">{option.title}</h3>
-                <p className="text-gray-700 mb-6">{option.description}</p>
+                <p className="text-gray-700 mb-6 flex-1">{option.description}</p>
                 <a
                   href={option.link}
                   className="inline-block bg-[#0B1F3A] text-white px-6 py-2 rounded font-semibold hover:bg-[#1a3352] transition-colors"
