@@ -118,7 +118,7 @@ export function MembershipPage() {
                 </li>
                 <li className="flex items-start">
                   <Check className="text-[#C9A227] mr-3 flex-shrink-0 mt-1" size={24} />
-                  <span className="text-gray-700">Fund research on enlisted quality of life issues</span>
+                  <span className="text-gray-700">Enable research on enlisted quality of life issues</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="text-[#C9A227] mr-3 flex-shrink-0 mt-1" size={24} />
@@ -211,7 +211,7 @@ export function MembershipPage() {
                 Active duty, Guard, and Reserve enlisted members from all branches who want their voices heard in Washington.
               </p>
               <p className="text-gray-700">
-                Your perspective matters. Whether you're a junior enlisted member or a senior NCO, your experience informs our advocacy.
+                Your perspective matters. Whether you're a junior enlisted member, an NCO, or a senior enlisted leader, your experience informs our advocacy.
               </p>
             </div>
             <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow">
