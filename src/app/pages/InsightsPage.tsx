@@ -84,7 +84,7 @@ export function InsightsPage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-[#0B1F3A] mb-8">Featured Analysis</h2>
-          <div className="bg-gray-50 rounded-lg p-8 md:p-12 border-l-4 border-[#C9A227]">
+          <div className="bg-gray-50 rounded-lg p-8 md:p-12 border border-gray-200">
             <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 ${categoryColors[featured.category]}`}>
               {featured.category}
             </span>
