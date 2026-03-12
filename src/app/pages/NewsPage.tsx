@@ -47,15 +47,6 @@ export function NewsPage() {
     },
   ];
 
-  const categories = [
-    "All News",
-    "Legislative Updates",
-    "Military Pay",
-    "Housing",
-    "Healthcare",
-    "Transition Support",
-  ];
-
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -68,52 +59,32 @@ export function NewsPage() {
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="bg-gray-50 py-6 sticky top-20 z-40 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category, index) => (
-              <button
-                key={index}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-                  index === 0
-                    ? "bg-[#C9A227] text-[#0B1F3A]"
-                    : "bg-white text-gray-700 border border-gray-300 hover:border-[#C9A227] hover:text-[#C9A227]"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Featured Article */}
-      <section className="py-16 bg-white">
+      <section className="py-10 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gray-50 rounded-lg overflow-hidden shadow-lg">
+          <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
             <div className="grid md:grid-cols-2 gap-0">
-              <div className="h-full">
+              <div className="h-56 md:h-72">
                 <img
                   src={articles[0].image}
                   alt={articles[0].title}
-                  className="w-full h-full object-cover min-h-[300px]"
+                  className="w-full h-full object-cover"
                 />
               </div>
-              <div className="p-8 md:p-12 flex flex-col justify-center">
-                <div className="flex items-center space-x-4 mb-4">
-                  <span className="bg-[#C9A227] text-[#0B1F3A] px-3 py-1 rounded-full text-sm font-semibold">
+              <div className="p-6 md:p-8 flex flex-col justify-center">
+                <div className="flex items-center space-x-3 mb-3">
+                  <span className="bg-[#C9A227] text-[#0B1F3A] px-3 py-1 rounded-full text-xs font-semibold">
                     Featured
                   </span>
-                  <span className="flex items-center text-sm text-gray-600">
-                    <Calendar size={16} className="mr-2" />
+                  <span className="flex items-center text-xs text-gray-500">
+                    <Calendar size={13} className="mr-1.5" />
                     {articles[0].date}
                   </span>
                 </div>
-                <h2 className="text-3xl font-bold text-[#0B1F3A] mb-4">
+                <h2 className="text-xl font-bold text-[#0B1F3A] mb-2">
                   {articles[0].title}
                 </h2>
-                <p className="text-lg text-gray-700 mb-6">
+                <p className="text-sm text-gray-700 mb-4">
                   {articles[0].excerpt}
                 </p>
                 <Link
