@@ -98,7 +98,7 @@ export function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-[#C9A227] rounded-full flex items-center justify-center">
-              <span className="text-[#0B1F3A] font-bold text-xl">MEAA</span>
+              <span className="text-[#0B1F3A] font-bold text-sm tracking-wide">MEAA</span>
             </div>
             <div className="hidden md:block">
               <div className="text-xl font-bold">MEAA</div>

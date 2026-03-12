@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Search, Loader2, ExternalLink } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, Loader2, ExternalLink, X } from "lucide-react";
 import type { AddressFormValues } from "../../types/lawmakers";
 
 const US_STATES: [string, string][] = [
@@ -18,6 +18,21 @@ const US_STATES: [string, string][] = [
   ["WI", "Wisconsin"], ["WY", "Wyoming"],
 ];
 
+const STORAGE_KEY = "meaa_lawmakers_form";
+
+const EMPTY: AddressFormValues = { street: "", city: "", state: "", zip: "", district: "" };
+
+function loadSaved(): AddressFormValues {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return EMPTY;
+    const parsed = JSON.parse(raw) as Partial<AddressFormValues>;
+    return { ...EMPTY, ...parsed };
+  } catch {
+    return EMPTY;
+  }
+}
+
 interface Props {
   onSubmit: (values: AddressFormValues) => void;
   isLoading: boolean;
@@ -26,14 +41,16 @@ interface Props {
 type FormErrors = Partial<Record<keyof AddressFormValues, string>>;
 
 export function AddressForm({ onSubmit, isLoading }: Props) {
-  const [values, setValues] = useState<AddressFormValues>({
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-    district: "",
-  });
+  const [values, setValues] = useState<AddressFormValues>(loadSaved);
   const [errors, setErrors] = useState<FormErrors>({});
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+    } catch {
+      // storage unavailable — silently ignore
+    }
+  }, [values]);
 
   const validate = (): boolean => {
     const next: FormErrors = {};
@@ -58,6 +75,11 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setValues((v) => ({ ...v, [key]: e.target.value }));
+    if (errors[key]) setErrors((err) => ({ ...err, [key]: undefined }));
+  };
+
+  const clear = (key: keyof AddressFormValues) => {
+    setValues((v) => ({ ...v, [key]: "" }));
     if (errors[key]) setErrors((err) => ({ ...err, [key]: undefined }));
   };
 
@@ -140,15 +162,27 @@ export function AddressForm({ onSubmit, isLoading }: Props) {
             Congressional District{" "}
             <span className="text-gray-400 font-normal">(optional)</span>
           </label>
-          <input
-            type="text"
-            placeholder="e.g. 31 or 31, 10"
-            maxLength={20}
-            className={inputCls("district")}
-            value={values.district}
-            onChange={set("district")}
-            disabled={isLoading}
-          />
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="e.g. 31 or 31, 10"
+              maxLength={20}
+              className={`${inputCls("district")} ${values.district ? "pr-9" : ""}`}
+              value={values.district}
+              onChange={set("district")}
+              disabled={isLoading}
+            />
+            {values.district && (
+              <button
+                type="button"
+                onClick={() => clear("district")}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Clear district"
+              >
+                <X size={15} />
+              </button>
+            )}
+          </div>
           {errors.district ? (
             <p className="text-red-500 text-xs mt-1">{errors.district}</p>
           ) : (
